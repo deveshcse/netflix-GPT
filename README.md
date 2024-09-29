@@ -1,36 +1,50 @@
 # Netflix-GPT
 
 ## Project Setup
-- 1. Creating the project:
-    - `npm create vite@latest Netflix-GPT -- --template react`
-    - `cd Netflix-GPT`
 
-- 2. Installing Tailwind CSS
-    - `npm install -D tailwindcss postcss autoprefixer`
-    - `npx tailwindcss init -p`
-- 3. Configure your template paths
-    - `  content: [`
-    - `"./index.html",`
-    - `"./src/**/*.{js,ts,jsx,tsx}",`
-    - `],`
+1. **Creating the project:**
+    ```bash
+    npm create vite@latest Netflix-GPT -- --template react
+    cd Netflix-GPT
+    ```
 
-- 4. Add the Tailwind directives to your CSS
-    - `@tailwind base;`
-    - `@tailwind components;`
-    - `@tailwind utilities;`
+2. **Installing Tailwind CSS:**
+    ```bash
+    npm install -D tailwindcss postcss autoprefixer
+    npx tailwindcss init -p
+    ```
 
+3. **Configure your template paths:**
+
+    Update your `tailwind.config.js` file:
+    ```javascript
+    content: [
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    ```
+
+4. **Add the Tailwind directives to your CSS:**
+
+    Add the following to your `src/index.css`:
+    ```css
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+    ```
 
 ## Features
-- Login/sign Up
-    - Sign In/ Sign Up Form
-    - Redirect to Browse Page
-- Brouse (after authentication)
+
+- **Login/Sign Up**
+    - Sign In/Sign Up form
+    - Redirect to Browse Page after authentication
+- **Browse (after authentication)**
     - Header
-    - Main Movie
+    - Main Movie Section
         - Trailer in Background
         - Title and Description
         - Movie Suggestions 
-            - MovieLists * N
-- NetflixGPT
+            - Multiple Movie Lists
+- **Netflix-GPT**
     - Search Bar
-    - Movie Suggestions
+    - Movie Suggestions based on search
