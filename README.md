@@ -20,7 +20,7 @@
     - `@tailwind utilities;`
 
 
-# Features
+## Features
 - Login/sign Up
     - Sign In/ Sign Up Form
     - Redirect to Browse Page
