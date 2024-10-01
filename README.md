@@ -1,5 +1,14 @@
 # Netflix-GPT
 
+- Create React App
+- Configured TailwindCSS
+- Header
+- Routing
+- Login Form
+- Sign Up form
+- Form Validation
+- useRef Hook
+
 ## Project Setup
 
 1. **Creating the project:**
