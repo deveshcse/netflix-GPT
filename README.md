@@ -8,6 +8,8 @@
 - Sign Up form
 - Form Validation
 - useRef Hook
+- Deployment of the app to production
+- Create sign up usear account
 
 ## Project Setup
 
