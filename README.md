@@ -9,7 +9,12 @@
 - Form Validation
 - useRef Hook
 - Deployment of the app to production
-- Create sign up usear account
+- Create sign up user account
+- Implement Sign In user api
+- Created Redux Store with userSlice
+- implemented sign out
+- update profile
+- 
 
 ## Project Setup
 

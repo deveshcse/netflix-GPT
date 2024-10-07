@@ -2,11 +2,20 @@ import { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/validate";
 import { auth } from "../utils/firebase";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -20,42 +29,72 @@ const Login = () => {
       password.current.value
     );
     setErrorMessage(message);
-    if(message) return;
+    if (message) return;
 
-    if(!isSignInForm){
+    if (!isSignInForm) {
       //Sign up logic
-      createUserWithEmailAndPassword(auth, email.current.value, password.current.value)
-  .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    console.log(user);
-    
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    setErrorMessage(errorCode +"-"+errorMessage);
-    // ..
-  });
-    } else{
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/93819231?v=4",
+          })
+            .then(() => {
+              //update store
+              const { uid, email, displayName, photoURL } = auth.currentUser ;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              setErrorMessage(error.message);
+            });
+
+          console.log(user);
+
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+          // ..
+        });
+    } else {
       // Sign In logic
-      signInWithEmailAndPassword(auth, email.current.value, password.current.value)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    console.log(user);
-    
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    setErrorMessage(errorCode +"-"+errorMessage);
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+          navigate("/browse");
 
-  });
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
     }
-
   };
 
   const toggleSignInForm = () => {
@@ -63,12 +102,12 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <Header />
 
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="w-3/12 absolute p-10 bg-black z-10 my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80"
+        className="absolute p-10 bg-black z-10 my-36 mx-auto right-0 left-0 text-white rounded-lg bg-opacity-80 md:w-3/12"
       >
         <h1 className="font-bold text-3xl py-4">
           {isSignInForm ? "Sign In" : "Sign Up"}
@@ -109,11 +148,7 @@ const Login = () => {
         </p>
       </form>
 
-      <div className="absolute">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/bfc0fc46-24f6-4d70-85b3-7799315c01dd/web/IN-en-20240923-TRIFECTA-perspective_74e21c19-980e-45ef-bd6c-78c1a6ce9381_medium.jpg"
-          alt="bg-image"
-        ></img>
+      <div className="background-image">
       </div>
     </div>
   );
